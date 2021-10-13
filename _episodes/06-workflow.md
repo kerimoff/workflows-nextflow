@@ -35,7 +35,7 @@ As seen previously, a `process` is invoked as a function in the `workflow` scope
  <process_name>(<input_ch1>,<input_ch2>,...)
 ~~~
 
-To combined multiple processes invoke them in the order they would appear in a workflow. When invoking a process with multiple inputs, provide them in the same order in which they are declared in the `input` block of the process.
+To combine multiple processes invoke them in the order they would appear in a workflow. When invoking a process with multiple inputs, provide them in the same order in which they are declared in the `input` block of the process.
 
 For example:
 
@@ -45,37 +45,42 @@ nextflow.enable.dsl=2
 
 process INDEX {
     input:
-      path transcriptome
+    path transcriptome
+    
     output:
-      path 'index'
+    path 'index'
+    
     script:
-      """
-      salmon index -t $transcriptome -i index
-      """
+    """
+    salmon index -t $transcriptome -i index
+    """
 }
 
  process QUANT {
     input:
-      each  path(index)
-      tuple(val(pair_id), path(reads))
+    each path(index)
+    tuple (val(pair_id), path(reads))
+    
     output:
-      path pair_id
+    path pair_id
+    
     script:
-      """
-      salmon quant --threads $task.cpus --libType=U -i $index -1 ${reads[0]} -2 ${reads[1]} -o $pair_id
-      """
+    """
+    salmon quant --threads $task.cpus --libType=U -i $index -1 ${reads[0]} -2 ${reads[1]} -o $pair_id
+    """
 }
 
 workflow {
-    transcriptome_ch = channel.fromPath('data/yeast/transcriptome/*.fa.gz',checkIfExists: true)
-    read_pairs_ch = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz',checkIfExists: true)
+    transcriptome_ch = channel.fromPath('data/yeast/transcriptome/*.fa.gz', checkIfExists: true)
+    read_pairs_ch = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz', checkIfExists: true)
 
-    //index process takes 1 input channel as a argument
+    //index process takes 1 input channel as a parameter
     index_obj = INDEX(transcriptome_ch)
 
-    //quant channel takes 2 input channels as arguments
-    QUANT(index_obj,read_pairs_ch).view()
+    //quant channel takes 2 input channels as parameters
+    QUANT(index_obj, read_pairs_ch).view()
 }
+
 ~~~
 {: .language-groovy }
 
@@ -97,7 +102,7 @@ workflow {
   read_pairs_ch = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz')
 
   // pass INDEX process as a parameter to QUANT process
-  QUANT(INDEX(transcriptome_ch),read_pairs_ch ).view()
+  QUANT(INDEX(transcriptome_ch), read_pairs_ch).view()
 }
 ~~~
 {: .language-groovy }
@@ -116,8 +121,8 @@ workflow {
     read_pairs_ch = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz')
     INDEX(transcriptome_ch)
 
-    // process output  accessed using the `out` attribute of the index object index_out
-    QUANT(INDEX.out,read_pairs_ch)
+    // process output is accessed using the `out` attribute
+    QUANT(INDEX.out, read_pairs_ch)
     QUANT.out.view()
 }
 ~~~
@@ -137,7 +142,6 @@ For example in the script below we name the output from the `INDEX` process as `
 nextflow.enable.dsl=2
 
 process INDEX {
-
   input:
   path transcriptome
 
@@ -151,23 +155,27 @@ process INDEX {
 }
 
 process QUANT {
-   input:
-     each  path(index)
-     tuple(val(pair_id), path(reads))
-   output:
-     path pair_id
-   script:
-     """
-     salmon quant --threads $task.cpus --libType=U -i $index -1 ${reads[0]} -2 ${reads[1]} -o $pair_id
-     """
+  input:
+  each path(index)
+  tuple(val(pair_id), path(reads))
+  
+  output:
+  path pair_id
+   
+  script:
+  """
+  salmon quant --threads $task.cpus --libType=U -i $index -1 ${reads[0]} -2 ${reads[1]} -o $pair_id
+  """
 }
 
 workflow {
   transcriptome_ch = channel.fromPath('data/yeast/transcriptome/*.fa.gz')
   read_pairs_ch = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz')
+
   INDEX(transcriptome_ch)
-  QUANT(INDEX.out.salmon_index,read_pairs_ch).view()
+  QUANT(INDEX.out.salmon_index, read_pairs_ch).view()
 }
+
 ~~~
 {: .language-groovy }
 
@@ -186,8 +194,9 @@ params.read_pairs_ch = 'data/yeast/reads/*_{1,2}.fq.gz'
 workflow {
   transcriptome_ch = channel.fromPath(params.transcriptome)
   reads = channel.fromFilePairs(params.reads)
+
   INDEX(transcriptome_ch)
-  QUANT(index.out.salmon_index,read_pairs_ch).view()
+  QUANT(index.out.salmon_index, read_pairs_ch).view()
 }
 ~~~
 {: .language-groovy }
@@ -200,49 +209,52 @@ In this example `params.transcriptome` and `params.reads` can be accessed inside
 >
 > **Note:** You will need to pass the `read_pairs_ch` as an argument to FASTQC and you will need to use the `collect` operator to gather the items in the FASTQC channel output to a single List item. We will learn more about the `collect` operator in the Operators episode.
 > ~~~
->//workflow_exercise.nf
->nextflow.enable.dsl=2
->params.reads = 'data/yeast/reads/*_{1,2}.fq.gz'
->
->process FASTQC {
->  input:
->  tuple val(sample_id), path(reads)
->
->  output:
->  path "fastqc_${sample_id}_logs/*.zip"
->
->  script:
->  //flagstat simple stats on bam file
->  """
->  mkdir fastqc_${sample_id}_logs
->  fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads} -t ${task.cpus}
->  """
+> //workflow_exercise.nf
+> nextflow.enable.dsl=2
+> 
+> params.reads = 'data/yeast/reads/*_{1,2}.fq.gz'
+> 
+> process FASTQC {
+>   input:
+>   tuple val(sample_id), path(reads)
+> 
+>   output:
+>   path "fastqc_${sample_id}_logs/*.zip"
+> 
+>   script:
+>   //flagstat simple stats on bam file
+>   """
+>   mkdir fastqc_${sample_id}_logs
+>   fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads} -t ${task.cpus}
+>   """
+>  }
+> 
+> process PARSEZIP {
+>   publishDir "results/fqpass", mode:"copy"
+>   
+>   input:
+>   path flagstats
+> 
+>   output:
+>   path 'pass_basic.txt'
+> 
+>   script:
+>   """
+>   for zip in *.zip; do zipgrep 'Basic Statistics' \$zip|grep 'summary.txt'; done > pass_basic.txt
+>   """
 > }
->
->process PARSEZIP {
->  publishDir "results/fqpass", mode:"copy"
->  input:
->  path flagstats
->
->  output:
->  path 'pass_basic.txt'
->
->  script:
->  """
->  for zip in *.zip; do zipgrep 'Basic Statistics' \$zip|grep 'summary.txt'; done > pass_basic.txt
->  """
->}
->read_pairs_ch = channel.fromFilePairs(params.reads,checkIfExists: true)
+> 
+> read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true)
+> 
 > workflow {
-> //connect process FASTQC and PARSEZIP
+>   //connect process FASTQC and PARSEZIP
 > }
 >~~~
 > {: .language-groovy }
 > >
 > > ## Solution
 > > ~~~
-> > //workflow_exercise.nf
-> >
+> > //workflow_exercise_answer.nf
 > > nextflow.enable.dsl=2
 > >
 > > params.reads = 'data/yeast/reads/*_{1,2}.fq.gz'
@@ -264,6 +276,7 @@ In this example `params.transcriptome` and `params.reads` can be accessed inside
 > >
 > > process PARSEZIP {
 > >   publishDir "results/fqpass", mode:"copy"
+> > 
 > >   input:
 > >   path flagstats
 > >
@@ -276,7 +289,7 @@ In this example `params.transcriptome` and `params.reads` can be accessed inside
 > >   """
 > > }
 > >
-> > read_pairs_ch = channel.fromFilePairs(params.reads,checkIfExists: true)
+> > read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true)
 > >
 > > workflow {
 > >   PARSEZIP(FASTQC(read_pairs_ch).collect())
