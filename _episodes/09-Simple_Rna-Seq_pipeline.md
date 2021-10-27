@@ -15,8 +15,8 @@ objectives:
 - "Use a conda `environment.yml` file to install the pipeline's software requirement."
 - "Produce an execution report and generates run metrics from a pipeline run."
 keypoints:
-- "Nextflow can combined tasks (processes) and manage data flows using channels into a single pipeline/workflow."
-- "A Workflow can be parameterise using `params` . These value of the parameters can be captured in a log file using  `log.info` "
+- "Nextflow can combine tasks (processes) and manage data flows using channels into a single pipeline/workflow."
+- "A Workflow can be parameterised using `params`. Theses value of the parameters can be captured in a log file using  `log.info` "
 - "Nextflow can handle a workflow's software requirements using several technologies including the `conda` package and enviroment manager."
 - "Workflow steps are connected via their `inputs` and `outputs` using `Channels`."
 - "Intermediate pipeline results can be transformed using Channel `operators` such as `combine`."
@@ -116,7 +116,7 @@ reads: data/yeast/reads/ref1*_{1,2}.fq.gz
 > {: .solution}
 {: .challenge}
 
-It can be useful to print the pipeline parameters to the screen. This can be done using the the `log.info` command and a multiline string statement. The string method `.stripIndent()` command is used to remove the indentation on multi-line strings. `log.info` also saves the output to the log execution file `.nextflow.log`.
+It can be useful to print the pipeline parameters to the screen. This can be done using the `log.info` command and a multiline string statement. The string method `.stripIndent()` command is used to remove the indentation on multi-line strings. `log.info` also saves the output to the log execution file `.nextflow.log`.
 
 ~~~
 log.info """\
@@ -382,7 +382,7 @@ File paths including one or more wildcards ie. `*`, `?`, etc. MUST be wrapped in
 > > ## Solution
 > > ~~~
 > > Channel.fromFilePairs(params.reads)
-> > .set{read_pairs_ch}
+> >   .set{read_pairs_ch}
 > > ~~~
 > > {: .language-groovy }
 > {: .solution}
@@ -393,7 +393,7 @@ File paths including one or more wildcards ie. `*`, `?`, etc. MUST be wrapped in
 > > ## Solution
 > > ~~~
 > > Channel.fromFilePairs(params.reads, checkIfExists: true)
-> > .set{read_pairs_ch}
+> >   .set{read_pairs_ch}
 > > ~~~
 > > {: .language-groovy }
 > {: .solution}
@@ -455,7 +455,7 @@ $ nextflow run script4.nf
 
 You will see the execution of the index and quantification process.
 
-Re run the command using the `-resume` option
+Re-run the command using the `-resume` option
 
 ~~~
 $ nextflow run script4.nf -resume
@@ -680,7 +680,7 @@ $ nextflow run script6.nf --reads 'data/yeast/reads/*_{1,2}.fq.gz' -resume
 ~~~~
 {: .language-bash}
 
-It creates the final report in the results folder in the ${params.outdir}/multiqc directory.
+It creates the final report in the results folder in the `${params.outdir}/multiqc` directory.
 
 ### Recap
 
@@ -696,7 +696,7 @@ In this step you have learned:
 
 This step shows how to execute an action when the pipeline completes the execution.
 
-**Note:** that Nextflow processes define the execution of asynchronous tasks i.e. they are not executed one after another as they are written in the pipeline script as it would happen in a common imperative programming language.
+**Note:** Nextflow processes define the execution of asynchronous tasks i.e. they are not executed one after another as they are written in the pipeline script as it would happen in a common imperative programming language.
 
 The script uses the `workflow.onComplete` event handler to print a confirmation message when the script completes.
 
@@ -734,7 +734,7 @@ Nextflow is able to produce multiple reports and charts providing several runtim
 
 * The `-with-report` option enables the creation of the workflow execution report.
 
-* The `-with-trace` option enables the create of a tab separated file containing runtime information for each executed task, including: submission time, start time, completion time, cpu and memory used..
+* The `-with-trace` option enables the create of a tab separated file containing runtime information for each executed task, including: submission time, start time, completion time, cpu and memory used.
 
 * The `-with-timeline` option enables the creation of the workflow timeline report showing how processes where executed along time. This may be useful to identify most time consuming tasks and bottlenecks. See an example at this [link](https://www.nextflow.io/docs/latest/tracing.html#timeline-report).
 
@@ -759,6 +759,3 @@ More information can be found [here](https://www.nextflow.io/docs/latest/tracing
 > {: .solution}
 {: .challenge}
 
-> ## short running tasks
-> Note: runtime metrics may be incomplete for run short running tasks..
-{: .callout}
