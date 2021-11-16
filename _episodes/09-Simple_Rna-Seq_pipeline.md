@@ -16,7 +16,7 @@ objectives:
 - "Produce an execution report and generates run metrics from a pipeline run."
 keypoints:
 - "Nextflow can combine tasks (processes) and manage data flows using channels into a single pipeline/workflow."
-- "A Workflow can be parameterised using `params`. Theses value of the parameters can be captured in a log file using  `log.info` "
+- "A Workflow can be parameterised using `params`. These values of the parameters can be captured in a log file using  `log.info` "
 - "Nextflow can handle a workflow's software requirements using several technologies including the `conda` package and enviroment manager."
 - "Workflow steps are connected via their `inputs` and `outputs` using `Channels`."
 - "Intermediate pipeline results can be transformed using Channel `operators` such as `combine`."
