@@ -120,7 +120,7 @@ Groovy knows various types of data. four common ones are:
 * `String` − These are text literals which are represented in the form of chain of characters enclosed in quotes. For example `"Hello World"`.
 * `int` − This is used to represent whole numbers. An example is `1234`.
 * `Boolean` − This represents a Boolean value which can either be `true` or `false`.
-* `float` - This is used to represent floating point number `12.34` .
+* `float` - This is used to represent floating point number. An example is `12.34` .
 
 A more complete list can be found [here](https://www.tutorialspoint.com/groovy/groovy_data_types.htm)
 

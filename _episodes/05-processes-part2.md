@@ -352,7 +352,7 @@ The output is now a tuple containing the sample id and the two processed fastq f
 
 > ## Composite inputs and outputs
 > Fill in the blank ___ input and output qualifers for `process_exercise_tuple.nf`.
-> **Note:** the output for the FASTQC process is a directory names `fastq_out`.
+> **Note:** the output for the FASTQC process is a directory named `fastq_out`.
 > ~~~
 > //process_exercise_tuple.nf
 > nextflow.enable.dsl=2
@@ -807,7 +807,7 @@ results/
 > ## Publishing results
 >  Add a `publishDir` directive to the nextflow script `process_exercise_publishDir.nf` that copies the index directory to the results folder .
 >  ~~~
-> //process_exercise_pubilishDir.nf
+> //process_exercise_publishDir.nf
 > nextflow.enable.dsl=2
 >
 > process INDEX {
