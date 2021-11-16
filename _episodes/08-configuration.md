@@ -158,7 +158,6 @@ Existing configuration can be completely ignored by using `-C <custom.config>` t
 {: .callout}
 
 > ## Determine script output
->
 > Determine the outcome of the following script executions.
 > Given the script `print_message.nf`:
 > ~~~
