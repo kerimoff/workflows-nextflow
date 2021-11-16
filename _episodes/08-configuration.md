@@ -162,19 +162,19 @@ Existing configuration can be completely ignored by using `-C <custom.config>` t
 > Given the script `print_message.nf`:
 > ~~~
 > nextflow.enable.dsl = 2
->
+> 
 > params.message = 'hello'
->
+> 
 > workflow {
 >     PRINT_MESSAGE(params.message)
 > }
->
+> 
 > process PRINT_MESSAGE {
 >     echo true
->
+> 
 >     input:
 >     val my_message
->
+> 
 >     script:
 >     """
 >     echo $my_message
@@ -186,7 +186,7 @@ Existing configuration can be completely ignored by using `-C <custom.config>` t
 > ~~~
 > params.message = 'Are you tired?'
 > ~~~
->
+> 
 > What is the outcome of the following commands?
 > 
 > 1. `nextflow run print_message.nf`
