@@ -355,7 +355,7 @@ The output is now a tuple containing the sample id and the two processed fastq f
 
 > ## Composite inputs and outputs
 > Fill in the blank ___ input and output qualifers for `process_exercise_tuple.nf`.
-> **Note:** the output for the FASTQC process is a directory named `fastq_out`.
+> **Note:** the output for the FASTQC process is a directory named `fastqc_out`.
 > ~~~
 > //process_exercise_tuple.nf
 > nextflow.enable.dsl=2
@@ -574,7 +574,7 @@ A complete list of directives is available at this [link](https://www.nextflow.i
 >  {: .language-groovy }
 > > ## solution
 > > ~~~
-> > //process_directives_answer.nf
+> > //process_exercise_directives_answers.nf
 > > nextflow.enable.dsl=2
 > >
 > > process FASTQC {
@@ -590,7 +590,7 @@ A complete list of directives is available at this [link](https://www.nextflow.i
 > >   script:
 > >   """
 > >   mkdir fastqc_out
-> >   fastqc $reads -o fastqc_out -t 1
+> >   fastqc $reads -o fastqc_out -t $task.cpus
 > >   """
 > > }
 > >
@@ -712,14 +712,14 @@ publishDir "results/quant", mode: "copy"
 ~~~
 {: .language-groovy }
 
-Full list [here](https://www.nextflow.io/docs/latest/process.html#publishdir).
+Full list of the publishDir directive parameters is [here](https://www.nextflow.io/docs/latest/process.html#publishdir).
 
 
 ###  Manage semantic sub-directories
 
 You can use more than one `publishDir` to keep different outputs in separate directories. To specify which files to put in which output directory use the parameter `pattern` with the a glob pattern that selects which files to publish from the overall set of output files.
 
-In the example below we will create an output folder structure in the directory results, which contains a separate sub-directory for bam files, `pattern:"*.bam"` ,  and a salmon output directory, `${sample_id}_salmon_output"`. Remember, we need to specify the files we want to copy as outputs.
+In the example below we will create an output folder structure in the directory results, which contains a separate sub-directory for bam files, `pattern:"*.bam"` ,  and a salmon output directory, `${sample_id}_salmon_output"`. Remember, we need to specify the files we want to be copied as outputs.
 
 ~~~
 //process_publishDir_semantic.nf
