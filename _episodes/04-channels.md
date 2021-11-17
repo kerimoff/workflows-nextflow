@@ -373,6 +373,7 @@ No files match pattern `*.fq.gz` at path: data/chicken/reads/
 > > N E X T F L O W  ~  version 21.04.0
 > > Launching `nf-training/scripts/channels/channel_fromPath.nf` [reverent_mclean] - revision: cf02269bcb
 > > data/yeast/samples.csv
+> > data/yeast/.hidden_file.txt
 > > data/yeast/bams/ref1.bam.bai
 > > data/yeast/bams/ref3.bam
 > > data/yeast/bams/etoh60_3.
