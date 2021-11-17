@@ -562,10 +562,10 @@ It’s also possible to define closures with multiple, custom-named parameters u
 For example:
 
 ~~~
-tp53 = [chromosome: "chr17",start:7661779 ,end:7687538, genome:'GRCh38', gene: "TP53"]
+tp53 = [chromosome:"chr17", start:7661779, end:7687538, genome:'GRCh38', gene:"TP53"]
 //perform subtraction of end and start coordinates
-region_length = {start,end -> end-start }
-tp53.length = region_length(tp53.start,tp53.end)
+region_length = { start, end -> end-start }
+tp53.length = region_length(tp53.start, tp53.end)
 println(tp53)
 ~~~
 {: .language-groovy }
