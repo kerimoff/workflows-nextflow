@@ -65,7 +65,7 @@ nextflow.enable.dsl=2
 
 process INDEX {
   script:
-  "salmon index -t ${projectDir}/data/yeast/transcriptome/Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa.gz -i data/yeast/salmon_index --kmerLen 31"
+  "salmon index -t ${projectDir}/data/yeast/transcriptome/Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa.gz -i ${projectDir}/data/yeast/salmon_index --kmerLen 31"
 }
 
 workflow {
@@ -369,8 +369,11 @@ nextflow run process_script_params.nf --kmer 11
 >
 >  script:
 >  """
->  salmon index -t $projectDir/data/yeast/transcriptome/Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa.gz -i index --kmer $params.kmer
->  echo "kmer size is" $params.kmer
+>  salmon index \
+>    -t $projectDir/data/yeast/transcriptome/Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa.gz \
+>    -i index \
+>    --kmer $params.kmer
+>  echo "kmer size is $params.kmer"
 >  """
 > }
 >
@@ -952,7 +955,7 @@ And include the command below in the script directive
 > ~~~~
   script:
   """
-  salmon index -t $transcriptome -i index -k $kmer .
+  salmon index -t $transcriptome -i index -k $kmer
   """
 > ~~~~
 > {: .language-groovy }
@@ -960,6 +963,7 @@ And include the command below in the script directive
 > > ~~~
 > > // process_exercise_combine_answer.nf
 > > nextflow.enable.dsl=2
+> > 
 > > process COMBINE {
 > >  input:
 > >  path transcriptome
@@ -1065,8 +1069,8 @@ The process will run eight times.
 > >
 > > process COMBINE {
 > >   input:
-> >   each transcriptome
-> >   path kmer
+> >   path transcriptome
+> >   each kmer
 > >  
 > >   script:
 > >   """
