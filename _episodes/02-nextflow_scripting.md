@@ -362,16 +362,20 @@ list size is:  3
 ~~~
 {: .output }
 
-We can use the `get` method items to retrieve items in a list.
+We can use the `getAt` method to retrieve items in a list.
 
 ~~~
 mylist = [0,1,2]
-println mylist.get(1)
+println mylist.getAt(1)
+println mylist.getAt(-1)
+println mylist.getAt([1..2])
 ~~~
 {: .language-groovy }
 
 ~~~
 1
+2
+[1, 2]
 ~~~
 {: .output }
 
@@ -416,7 +420,7 @@ println mylist.findAll{it%2 == 0}
 
 > ## Create List and retrieve value
 > Create a list object `list` with the values 1 to 10.
-> Access the fifth element in the list using with square-bracket notation or using the `get` method and
+> Access the fifth element in the list using with square-bracket notation or using the `getAt` method and
 > print the results
 > > ## Solution
 > > ~~~
@@ -425,7 +429,7 @@ println mylist.findAll{it%2 == 0}
 > > list = 1..10
 > > println("${list[4]}")
 > > //or
-> > println("${list.get(4)}")
+> > println("${list.getAt(4)}")
 > > ~~~
 > > {: .language-groovy }
 > > The fifth element is `5`. Remember that the array index starts at 0.
@@ -444,7 +448,7 @@ roi = [ chromosome : "chr17", start: 7640755, end: 7718054, genes: ['ATP1B2','TP
 {: .language-groovy }
 
 
-Maps can be accessed in a conventional square-bracket syntax or as if the key was a property of the map or using the dot notation. *Note:* When retrieving a value the key value is  enclosed in quotes.
+Maps can be accessed in a conventional square-bracket syntax or as if the key was a property of the map or using the dot notation. *Note:* When retrieving a value the key value is enclosed in quotes.
 
 ~~~
 //Use of the square brackets.
@@ -453,8 +457,8 @@ println(roi['chromosome'])
 //Use a dot notation            
 println(roi.start)
 
-//Use of get method                      
-println(roi.get('genes'))          
+//Use of getAt method                      
+println(roi.getAt('genes'))          
 ~~~
 {: .language-groovy }
 
