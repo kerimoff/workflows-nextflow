@@ -184,6 +184,7 @@ Analysis complete for ref1_1.fq.gz
 **Note:** There are some caveats on glob pattern behaviour:
 
 * Input files are not included in the list of possible matches.
+* There is no information about the order of the matching files in the output channel.
 * Glob pattern matches against both files and directories path.
 * When a two stars pattern `**` is used to recurse through subdirectories, only file paths are matched i.e. directories are not included in the result list.
 
@@ -251,15 +252,17 @@ Analysis complete for ref1_1.fq.gz
 
 So far we have seen how to declare multiple input and output channels, but each channel was handling only one value at time. However Nextflow can handle groups of values using the `tuple` qualifiers.
 
-In tuples the first item is the grouping key and the second item is the list.
+~~~
+[value1, file1, file2]
+[file1, file2, [value1, value2]]
+~~~
 
+In case the channel is created with `.filesFromPairs` factory method, the first item of the tuple will be a grouping value/key and the second item will be a list of files.
 ~~~
 [group_key,[file1,file2,...]]
 ~~~
 
-
-When using channel containing a tuple, such a one created with `.filesFromPairs` factory method, the corresponding input declaration must be declared with a `tuple` qualifier, followed by definition of each item in the tuple.
-
+The corresponding input declaration must be declared with a `tuple` qualifier, followed by definition of each item in the tuple.
 
 ~~~
 //process_tuple_input.nf
