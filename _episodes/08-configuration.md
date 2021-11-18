@@ -190,19 +190,21 @@ Existing configuration can be completely ignored by using `-C <custom.config>` t
 > params.message = 'Are you tired?'
 > ~~~
 > {: .language-groovy}
-> 
+{: .challenge}
+
+> ## Determine script output
 > What is the outcome of the following commands?
 > 
 > 1. `nextflow run print_message.nf`
-> 1. `nextflow run print_message.nf`
-> 1. `nextflow run print_message.nf`
-> 1. `nextflow run print_message.nf`
+> 1. `nextflow run print_message.nf --message '¿Que tal?'`
+> 1. `nextflow run print_message.nf -c print_message.config`
+> 1. `nextflow run print_message.nf -c print_message.config --message '¿Que tal?'`
 > 
 > > ## Solution
 > > 1. 'hello' - Workflow script uses the value in `print_message.nf`
-> > 1. 'hello' - Workflow script uses the value in `print_message.nf`
-> > 1. 'hello' - Workflow script uses the value in `print_message.nf`
-> > 1. 'hello' - Workflow script uses the value in `print_message.nf`
+> > 1. '¿Que tal?' - The command-line parameter overrides the script setting.
+> > 1. 'Are you tired?' - The configuration overrides the script setting
+> > 1. '¿Que tal?' - The command-line parameter overrides both the script and configuration settings.
 > {: .solution}
 {: .challenge}
 
