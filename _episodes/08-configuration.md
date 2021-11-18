@@ -160,6 +160,7 @@ Existing configuration can be completely ignored by using `-C <custom.config>` t
 > ## Determine script output
 > Determine the outcome of the following script executions.
 > Given the script `print_message.nf`:
+> 
 > ~~~
 > nextflow.enable.dsl = 2
 > 
@@ -182,10 +183,13 @@ Existing configuration can be completely ignored by using `-C <custom.config>` t
 > }
 > ~~~
 > {: .language-groovy}
+> 
 > and configuration (`print_message.config`):
+> 
 > ~~~
 > params.message = 'Are you tired?'
 > ~~~
+> {: .language-groovy}
 > 
 > What is the outcome of the following commands?
 > 
@@ -194,7 +198,6 @@ Existing configuration can be completely ignored by using `-C <custom.config>` t
 > 1. `nextflow run print_message.nf -c print_message.config`
 > 1. `nextflow run print_message.nf -c print_message.config --message '¿Que tal?'`
 > 
-> >
 > > ## Solution
 > > 1. 'hello' - Workflow script uses the value in `print_message.nf`
 > > 1. '¿Que tal?' - The command-line parameter overrides the script setting.
