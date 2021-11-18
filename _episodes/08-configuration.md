@@ -200,7 +200,7 @@ Existing configuration can be completely ignored by using `-C <custom.config>` t
 > 1. `nextflow run print_message.nf -c print_message.config`
 > 1. `nextflow run print_message.nf -c print_message.config --message '¿Que tal?'`
 > 
-> > ## Solution
+> > ## Solution
 > > 1. 'hello' - Workflow script uses the value in `print_message.nf`
 > > 1. '¿Que tal?' - The command-line parameter overrides the script setting.
 > > 1. 'Are you tired?' - The configuration overrides the script setting
