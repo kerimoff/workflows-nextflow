@@ -190,9 +190,7 @@ Existing configuration can be completely ignored by using `-C <custom.config>` t
 > params.message = 'Are you tired?'
 > ~~~
 > {: .language-groovy}
-{: .challenge}
-
-> ## Determine script output
+> 
 > What is the outcome of the following commands?
 > 
 > 1. `nextflow run print_message.nf`
