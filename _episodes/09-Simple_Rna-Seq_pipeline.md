@@ -49,7 +49,7 @@ $ salmon quant --threads <cpus> --libType=U -i <index> -1 <read1> -2 <read2> -o 
 ~~~
 {: .language-bash}
 
-* Create a MultiqQC report form the FastQC and salmon results.
+* Create a MultiqQC report from the FastQC and salmon results.
 
 ~~~
 $ multiqc .
@@ -362,7 +362,7 @@ $ nextflow run script3.nf
 It will print an output similar to the one shown below:
 
 ~~~
-[ref1, [data/yeast/reads/ref1_1.fq.gz,data/yeast/reads/ref1_2.fq.gz]]
+[ref1, [data/yeast/reads/ref1_1.fq.gz, data/yeast/reads/ref1_2.fq.gz]]
 ~~~
 {: .output }
 
@@ -503,7 +503,7 @@ In this step you have learned:
 
 * How to connect two processes by using the channel declarations
 
-* How to resume the script execution skipping already already computed steps
+* How to resume the script execution skipping already computed tasks
 
 * How to use the `tag` directive to provide a more readable execution output
 
@@ -580,15 +580,15 @@ The `FASTQC` process will not run as the process has not been declared in the wo
 
 In this step you have learned:
 
-* How to use the add a `process` to the `workflow` scope.
+* How to add a `process` to the `workflow` scope.
 * Add a channel as input to a `process`.
 
 ## MultiQC report
 
-This step collect the outputs from the quantification and fastqc steps to create a final report by using the [MultiQC](https://multiqc.info/) tool.
+This step collects the outputs from the quantification and fastqc steps to create a final report by using the [MultiQC](https://multiqc.info/) tool.
 
 The input for the `MULTIQC` process requires all data in a single channel element.
-Therefore, we will need combined the `FASTQC` and `QUANT` outputs using:
+Therefore, we will need to combine the `FASTQC` and `QUANT` outputs using:
 
 * The combining operator `mix` : combines the items in the two channels into a single channel
 
@@ -631,7 +631,7 @@ ch1.collect().view()
 >
 > > ## Solution
 > > You need to use the `mix` operator first to combine the channels followed by the `collect` operator to
-> > collect all the items in a single item.
+> > collect all the items in a single item. Therefore, both 1 and 3 will achieve the behavior we desire for this step.
 > >
 > {: .solution}
 {: .challenge}
@@ -734,9 +734,9 @@ Nextflow is able to produce multiple reports and charts providing several runtim
 
 * The `-with-report` option enables the creation of the workflow execution report.
 
-* The `-with-trace` option enables the create of a tab separated file containing runtime information for each executed task, including: submission time, start time, completion time, cpu and memory used.
+* The `-with-trace` option enables the creation of a tab separated file containing runtime information for each executed task, including: submission time, start time, completion time, cpu and memory used.
 
-* The `-with-timeline` option enables the creation of the workflow timeline report showing how processes where executed along time. This may be useful to identify most time consuming tasks and bottlenecks. See an example at this [link](https://www.nextflow.io/docs/latest/tracing.html#timeline-report).
+* The `-with-timeline` option enables the creation of the workflow timeline report showing how processes were executed along time. This may be useful to identify most time consuming tasks and bottlenecks. See an example at this [link](https://www.nextflow.io/docs/latest/tracing.html#timeline-report).
 
 * The `-with-dag` option enables to rendering of the workflow execution direct acyclic graph representation.
 **Note:** this feature requires the installation of [Graphviz](https://graphviz.org/), an open source graph visualization software,  in your system.
