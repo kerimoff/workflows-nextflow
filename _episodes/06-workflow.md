@@ -56,7 +56,7 @@ process INDEX {
     """
 }
 
- process QUANT {
+process QUANT {
     input:
     each path(index)
     tuple (val(pair_id), path(reads))
@@ -75,17 +75,17 @@ workflow {
     read_pairs_ch = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz', checkIfExists: true)
 
     //index process takes 1 input channel as a parameter
-    index_obj = INDEX(transcriptome_ch)
+    index_ch = INDEX(transcriptome_ch)
 
     //quant channel takes 2 input channels as parameters
-    QUANT(index_obj, read_pairs_ch).view()
+    QUANT(index_ch, read_pairs_ch).view()
 }
 
 ~~~
 {: .language-groovy }
 
 In this example, the `INDEX` process is invoked first and the `QUANT` process second.
-The `INDEX` object, `index_obj`, is passed as the first argument to the `QUANT` process. The `read_pairs_ch` channel is passed as the second argument.
+The output of the `INDEX` process, `index_ch`, is passed as the first argument to the `QUANT` process. The `read_pairs_ch` channel is passed as the second argument. Then, we use `view` method to see the output content of the `QUANT` process.
 
 
 ### Process composition
@@ -101,7 +101,7 @@ workflow {
   transcriptome_ch = channel.fromPath('data/yeast/transcriptome/*.fa.gz')
   read_pairs_ch = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz')
 
-  // pass INDEX process as a parameter to QUANT process
+  // pass INDEX process output as an argument to the QUANT process input
   QUANT(INDEX(transcriptome_ch), read_pairs_ch).view()
 }
 ~~~
@@ -157,7 +157,7 @@ process INDEX {
 process QUANT {
   input:
   each path(index)
-  tuple(val(pair_id), path(reads))
+  tuple (val(pair_id), path(reads))
   
   output:
   path pair_id
@@ -205,9 +205,9 @@ In this example `params.transcriptome` and `params.reads` can be accessed inside
 
 
 > ## Workflow
-> Connect the output of the process `FASTQC` to `PARSEZIP` in the Nextflow script `workflow_exercise.nf`.
+> Connect the output of the process `FASTQC` to `PARSEZIP` in the Nextflow script `workflow_exercise.nf`. So that, `FASTQC` process is executed first and the multiple results of this process collected into the single list item and passed into the `PARSEZIP` process.
 >
-> **Note:** You will need to pass the `read_pairs_ch` as an argument to FASTQC and you will need to use the `collect` operator to gather the items in the FASTQC channel output to a single List item. We will learn more about the `collect` operator in the Operators episode.
+> **Note:** You will need to pass the `read_pairs_ch` as an argument to FASTQC and you will need to use the `collect` operator to gather the items in the FASTQC channel output to a single List item. We will learn more about the `collect` operator in the upcoming Operators episode.
 > ~~~
 > //workflow_exercise.nf
 > nextflow.enable.dsl=2
