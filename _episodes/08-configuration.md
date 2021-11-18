@@ -66,7 +66,7 @@ my_home_dir = "$HOME"
 >
 > ~~~
 > workflow {
->     MY_PROCESS( params.input )
+>     MY_PROCESS( Channel.fromPath(params.input) )
 > }
 > ~~~
 > {: .language-groovy}
@@ -194,6 +194,7 @@ Existing configuration can be completely ignored by using `-C <custom.config>` t
 > 1. `nextflow run print_message.nf -c print_message.config`
 > 1. `nextflow run print_message.nf -c print_message.config --message '¿Que tal?'`
 > 
+> >
 > > ## Solution
 > > 1. 'hello' - Workflow script uses the value in `print_message.nf`
 > > 1. '¿Que tal?' - The command-line parameter overrides the script setting.
