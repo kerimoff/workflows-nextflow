@@ -6,7 +6,7 @@ questions:
 - "How do I perform operations, such as filtering, on channels?"
 - "What are the different kinds of operations I can perform on channels?"
 - "How do I combine operations?"
-- "How can I use a CSV file to process data into a Channel?"
+- "How can I use a CSV file to process data into a channel?"
 objectives:
 - "Understand what Nextflow operators are."
 - "Modify the contents/elements of a channel using operators."
@@ -22,13 +22,13 @@ keypoints:
 
 # Operators
 
-In the Channels episode we learnt how to create Nextflow channels to enable us to pass data and values around our workflow. If we want to modify the contents or behaviour of a channel, Nextflow provides methods called `operators`. We have previously used the `view` operator to view the contents of a channel. There are many more operator methods that can be applied to Nextflow channels that can be usefully separated into several groups:
+In the Channels episode we learnt how to create Nextflow channels to enable us to pass data and values around our workflow. If we want to modify the contents or structure of a channel, Nextflow provides methods called `operators`. We have previously used the `view` operator to view the contents of a channel. There are many more operator methods that can be applied to Nextflow channels that can be usefully separated into several groups:
 
 
  * **Filtering** operators: reduce the number of elements in a channel.
  * **Transforming** operators: transform the value/data in a channel.
  * **Splitting** operators: split items in a channel into smaller chunks.
- * **Combining** operators: join channel together.
+ * **Combining** operators: join multiple channels together.
  * **Forking** operators: split a single channel into multiple channels.
  * **Maths** operators: apply simple math function on channels.
  * **Other**: such as the view operator.
@@ -83,7 +83,28 @@ prints:
 ~~~
 {: .language-groovy }
 
-
+> ## View channel consumes the channel items
+> The `view` operator actually consumes the queue channel when invoked. However, after consuming the content of a channel, it return the > exact copy of the consumed values.
+> 
+> So, if we use `view` operator on one channel twice it will result in an error, because the second usage the channel is empty.
+> ~~~
+> ch = channel
+>       .of('1', '2', '3')
+> ch.view() // prints 1 2 3
+> ch.view() // Throws an error
+> ~~~
+> {: .language-groovy }
+> 
+> However, if we assign the return value to a new channel
+> 
+> ~~~
+> ch = channel
+      > .of('1', '2', '3')
+> ch_new = ch.view() // prints 1 2 3
+> ch_new.view()      // prints 1 2 3
+> ~~~
+> {: .language-groovy }
+{: .callout}
 #### Closures
 
 An optional *closure* `{}` parameter can be specified to customise how items are printed.
