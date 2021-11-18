@@ -661,7 +661,7 @@ ch = channel
 {: .output }
 
 > ## Maths operators mostly produce a value channel
-> The operators count, min, max and sum are producing a value channel and as we learned before, value channels are unconsumable. Value channels always contain only one item can be used multiple times.
+> The operators count, min, max and sum are producing a value channel and as we learned before, value channels are unconsumable. Value channels always contain only one item and can be used multiple times.
 {: .callout}
 
 ## Splitting items in a channel
@@ -754,7 +754,7 @@ data/yeast/reads/ref2_1.fq.gz
 ~~~
 {: .output}
 
-When `header` flag is true in `splitCSV` operator the items of a channel become a map objects
+When `header` flag is true in `splitCSV` operator the items of a channel become map objects (e.g. key:value)
 ~~~
 csv_ch=channel
     .fromPath('data/yeast/samples.csv')
