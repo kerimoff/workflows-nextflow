@@ -319,8 +319,8 @@ workflow {
 // configuration_process-labels.config
 process {
     withLabel: big_mem {
-        cpus = 16
-        memory = 64.GB
+        cpus = 2
+        memory = 4.GB
     }
 }
 ~~~
@@ -368,26 +368,26 @@ priority rules are applied (from highest to lowest):
 > nextflow.enable.dsl=2
 >
 > process P1 {
->     echo true
+>   echo true
 >
->     script:
->     """
->     echo P1: Using $task.cpus cpus and $task.memory memory.
->     """
+>   script:
+>   """
+>   echo P1: Using $task.cpus cpus and $task.memory memory.
+>   """
 > }
 >
 > process P2 {
->     echo true
+>   echo true
 >
->     script:
->     """
->     echo P2: Using $task.cpus cpus and $task.memory memory.
->     """
+>   script:
+>   """
+>   echo P2: Using $task.cpus cpus and $task.memory memory.
+>   """
 > }
 >
 > workflow {
->    P1()
->    P2()
+>   P1()
+>   P2()
 > }
 > ~~~
 > {: .language-groovy }
@@ -408,7 +408,7 @@ priority rules are applied (from highest to lowest):
 > > ~~~
 > > {: .language-groovy}
 > > ~~~
-> > $ nextflow run process-selector.nf -c process-selector.config -process.echo
+> > $ nextflow run process-selector.nf -c process-selector.config 
 > > ~~~
 > > {: .language-bash}
 > > ~~~
@@ -572,21 +572,21 @@ environments are stored. By default this is in `conda` folder of the `work` dire
 > params.input = "data/yeast/reads/ref1_1.fq.gz"
 >
 > workflow {
->     FASTP( Channel.fromPath( params.input ) ).out.view()
+>     FASTP( Channel.fromPath( params.input ) )
+>     FASTP.out.view()
 > }
 >
 > process FASTP {
->
->    input:
->    path read
->
->    output:
->    stdout
->
->    script:
->    """
->    fastp -A -i ${read} -o out.fq 2>&1
->    """
+>     input:
+>     path read
+> 
+>     output:
+>     stdout
+> 
+>     script:
+>     """
+>     fastp -A -i ${read} -o out.fq 2>&1
+>     """
 > }
 > ~~~
 > {: .language-groovy }
@@ -608,7 +608,7 @@ environments are stored. By default this is in `conda` folder of the `work` dire
 > > {: .language-bash}
 > > ~~~
 > > N E X T F L O W  ~  version 21.04.0
-> > Launching `configuration_fastp.nf` [berserk_jepsen] - revision: 28fadd2486
+> > Launching `configure_fastp.nf` [berserk_jepsen] - revision: 28fadd2486
 > > executor >  local (1)
 > > [c1/c207d5] process > FASTP (1) [100%] 1 of 1 ✔
 > > Creating Conda env: bioconda::fastp=0.12.4-0 [cache /home/training/work/conda/env-a7a3a0d820eb46bc41ebf4f72d955e5f]
@@ -758,9 +758,7 @@ nextflow run <your script> -profile cluster
 > is read in. For example, in the following example, the `publishDir`
 > directive will always take the value 'results' even when the
 > profile `hpc` is used. This is because the setting is evaluated
-> before Nextflow knows about the `hpc` profile. If the `publishDir`
-> directive is moved to after the `profiles` scope, then `publishDir`
-> will use the correct value of `params.results`.
+> before Nextflow knows about the `hpc` profile. 
 >
 > ~~~
 > params.results = 'results'
@@ -772,6 +770,20 @@ nextflow run <your script> -profile cluster
 > }
 > ~~~
 > {: .language-groovy}
+> If the `publishDir`
+> directive is moved to after the `profiles` scope, then `publishDir`
+> will use the correct value of `params.results`.
+> 
+> ~~~
+> params.results = 'results'
+> profiles {
+>     hpc {
+>         params.results = '/long/term/storage/results'
+>     }
+> }
+> process.publishDir = params.results
+> ~~~
+> {: .language-groovy}
 {: .callout}
 
 ## Inspecting the Nextflow configuration
@@ -781,12 +793,23 @@ configuration of a workflow. This allows you to see what settings
 Nextflow will use to run a workflow.
 
 ~~~
-$ nextflow config workflow_02.nf -profile test
+$ nextflow config configure_fastp.nf -profile cloud
 ~~~
 {: .language-bash}
 
 ~~~
-FIXME: fill in
+params {
+   genome = '/data/stared/ref.fasta'
+}
+
+process {
+   executor = 'awsbatch'
+   container = 'cbcrg/imagex'
+}
+
+docker {
+   enabled = true
+}
 ~~~
 {: .output}
 
