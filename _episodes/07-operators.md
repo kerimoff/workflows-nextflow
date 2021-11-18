@@ -88,8 +88,7 @@ prints:
 > 
 > So, if we use `view` operator on one channel twice it will result in an error, because the second usage the channel is empty.
 > ~~~
-> ch = channel
->       .of('1', '2', '3')
+> ch = channel.of('1', '2', '3')
 > ch.view() // prints 1 2 3
 > ch.view() // Throws an error
 > ~~~
@@ -98,8 +97,7 @@ prints:
 > However, if we assign the return value to a new channel
 > 
 > ~~~
-> ch = channel
-      > .of('1', '2', '3')
+> ch = channel.of('1', '2', '3')
 > ch_new = ch.view() // prints 1 2 3
 > ch_new.view()      // prints 1 2 3
 > ~~~
