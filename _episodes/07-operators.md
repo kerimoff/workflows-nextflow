@@ -15,7 +15,7 @@ objectives:
 
 keypoints:
 - "Nextflow *operators* are methods that allow you to modify, set or view channels."
-- "Operators can be separated in to several groups; filtering , transforming , splitting , combining , forking and Maths operators"
+- "Operators can be separated into the several groups; filtering, transforming, splitting, combining, forking and Maths operators"
 - "To use an operator use the dot notation after the Channel object e.g. `my_ch.view()`."
 - "You can parse text items emitted by a channel, that are formatted using the CSV format,  using the `splitCsv` operator."
 ---
@@ -166,7 +166,7 @@ We will then use the `view` operator to print the contents.
 
 ~~~
 chr_ch = channel.of( 1..22, 'X', 'Y' )
-autosomes_ch =chr_ch.filter( Number )
+autosomes_ch = chr_ch.filter( Number )
 autosomes_ch.view()
 ~~~
 {: .language-groovy }
@@ -262,7 +262,7 @@ channel
 {: .output }
 
 > ## Closures
-> In the above example we could remove the brackets around the filter condition e.g. `filter{ it<5}`, since it specifies a closure as the operator’s argument. This is language short for `filter({ it<5})`
+> In the above example we removed the brackets around the filter condition e.g. `filter{ it<5 }`, since it specifies a closure as the operator’s argument. This is just a shorter version of `filter({ it<5 })`
 {: .callout}
 
 ####  Literal value
@@ -660,6 +660,10 @@ ch = channel
 ~~~
 {: .output }
 
+> ## Maths operators mostly produce a value channel
+> The operators count, min, max and sum are producing a value channel and as we learned before, value channels are unconsumable. Value channels always contain only one item can be used multiple times.
+{: .callout}
+
 ## Splitting items in a channel
 
 Sometimes you want to split the content of a individual item in a channel, like a file or string, into smaller chunks that can be processed by downstream operators or processes e.g. items stored in a CSV file.
@@ -750,6 +754,38 @@ data/yeast/reads/ref2_1.fq.gz
 ~~~
 {: .output}
 
+When `header` flag is true in `splitCSV` operator the items of a channel become a map objects
+~~~
+csv_ch=channel
+    .fromPath('data/yeast/samples.csv')
+    .splitCsv(header:true)
+csv_ch.view()
+~~~
+{: .language-groovy }
+
+~~~
+[sample_id:ref1, fastq_1:data/yeast/reads/ref1_1.fq.gz, fastq_2:data/yeast/reads/ref1_2.fq.gz]
+[sample_id:ref2, fastq_1:data/yeast/reads/ref2_1.fq.gz, fastq_2:data/yeast/reads/ref2_2.fq.gz]
+~~~
+{: .output}
+
+So, the map operator can be used in order to convert it to plain values/files
+~~~
+csv_ch=channel
+    .fromPath('data/yeast/samples.csv')
+    .splitCsv(header:true, strip:true)
+    .map{row -> [ row.sample_id, file(row.fastq_1), file(row.fastq_2)]}
+csv_ch.view()
+~~~
+{: .language-groovy }
+
+~~~
+[ref1, data/yeast/reads/ref1_1.fq.gz, data/yeast/reads/ref1_2.fq.gz]
+[ref2, data/yeast/reads/ref2_1.fq.gz, data/yeast/reads/ref2_2.fq.gz]
+~~~
+{: .output}
+
+**Note:** `strip:true` option strips the white space around the values provided in the csv file.
 
 > ## Parse a CSV file
 >
@@ -761,7 +797,7 @@ data/yeast/reads/ref2_1.fq.gz
 > {: .language-groovy }
 > > ## Solution
 > > ~~~~
-> >  csv_ch=channel
+> > csv_ch=channel
 > >         .fromPath('data/yeast/samples.csv')
 > >         .splitCsv(header:true)
 > >
@@ -776,7 +812,7 @@ data/yeast/reads/ref2_1.fq.gz
 
 If you want to split a `tab` delimited file or file separated by another character use the `sep` parameter of the split `splitCsv` operator.
 
-For examples,
+For example,
 
 ~~~
 Channel.of("val1\tval2\tval3\nval4\tval5\tval6\n")
