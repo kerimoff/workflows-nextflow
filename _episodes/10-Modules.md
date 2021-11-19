@@ -6,14 +6,14 @@ questions:
 - "How can I reuse a Nextflow `process` in different workflows?"
 - "How do I use parameters in a module?"
 objectives:
+- "Create Nextflow modules."
 - "Add modules to a Nextflow script."
-- "Create a Nextflow modules."
 - "Understand how to use parameters in a module."
 keypoints:
 - "A module file is a Nextflow script containing one or more `process` definitions that can be imported from another Nextflow script."
 - "To import a module into a workflow use the `include` keyword."
 - "A module script can define one or more parameters using the same syntax of a Nextflow workflow script."
-- "The module inherits the parameters define before the include statement, therefore any further parameter set later is ignored."
+- "The module inherits the parameters defined before the include statement, therefore any further parameter set later is ignored."
 ---
 
 ## Modules
@@ -31,13 +31,15 @@ For example:
 ~~~
 process INDEX {
   input:
-    path transcriptome
+  path transcriptome
+  
   output:
-    path 'index'
+  path 'index'
+  
   script:
-    """
-    salmon index --threads $task.cpus -t $transcriptome -i index
-    """
+  """
+  salmon index --threads $task.cpus -t $transcriptome -i index
+  """
 }
 ~~~
 {: .language-groovy }
@@ -77,9 +79,11 @@ Nextflow implicitly looks for the script file `./modules/rnaseq-tasks.nf` resolv
 > Add the Nextflow module `FASTQC` from the Nextflow script `./modules/rnaseq-tasks.nf`
 > to the following workflow.
 > ~~~
+> // modules_exercise_add_module.nf
 > nextflow.enable.dsl=2
 >
->
+> // include the FASTQC process from module here
+> 
 > params.reads = "data/yeast/reads/ref1_{1,2}.fq.gz"
 > read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists:true )
 >
@@ -93,7 +97,7 @@ Nextflow implicitly looks for the script file `./modules/rnaseq-tasks.nf` resolv
 > > nextflow.enable.dsl=2
 > > include { FASTQC } from './modules/rnaseq-tasks'
 > >
-> > params.reads = "$baseDir/data/yeast/reads/ref1_{1,2}.fq.gz"
+> > params.reads = "data/yeast/reads/ref1_{1,2}.fq.gz"
 > > read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists:true )
 > >
 > > workflow {
@@ -110,7 +114,7 @@ A Nextflow script allows the inclusion of any number of modules.
 When multiple components need to be included from the some module script,
 the component names can be specified in the same inclusion using the curly brackets `{}`.
 
-**Note** Component names are separated by a semi-colon `;` as shown below:
+**Note:** Component names are separated by a semi-colon `;` as shown below:
 
 ~~~
 nextflow.enable.dsl=2
@@ -170,13 +174,14 @@ workflow {
 > Add the Nextflow modules `FASTQC` and `MULTIQC` from the Nextflow script `modules/rnaseq-tasks.nf`
 > to the following workflow.
 > ~~~
+> // modules_exercise_add_multiple_modules.nf
 > nextflow.enable.dsl=2
 > params.reads = "$baseDir/data/yeast/reads/ref1_{1,2}.fq.gz"
 > read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists:true )
 >
 > workflow {
 >    FASTQC(read_pairs_ch)
->    MULTIQC(fastqc.out.collect())
+>    MULTIQC(FASTQC.out.collect())
 > }
 > ~~~~
 > {: .language-groovy }
@@ -190,7 +195,7 @@ workflow {
 > >
 > > workflow {
 > >    FASTQC(read_pairs_ch)
-> >    MULTIQC(fastqc.out.collect())
+> >    MULTIQC(FASTQC.out.collect())
 > > }
 > > ~~~
 > > {: .language-groovy }
@@ -202,24 +207,22 @@ workflow {
 A module script can define one or more parameters using the same syntax of a Nextflow workflow script:
 
 ~~~
-//functions.nf file
+//module.nf file
 params.message = 'parameter from module script'
 
-//The def keyword allows use to define a function that we can use in the code
 def sayMessage() {
     println "$params.message"
 }
 ~~~
 {: .language-groovy }
 
-Then, parameters are inherited from the including context. For example:
+Then, parameters defined in the included module will be used. For example if we run the following script:
 
 ~~~
+// module_parameters.nf
 nextflow.enable.dsl=2
 
-params.message = 'parameter from workflow script'
-
-include {sayMessage} from './modules/functions'
+include {sayMessage} from './modules/module.nf'
 
 workflow {
     sayMessage()
@@ -227,14 +230,53 @@ workflow {
 ~~~
 {: .language-groovy }
 
-The above snippet prints:
+~~~
+parameter from module script
+~~~
+{: .output }
+
+If the parameter is redifend in a scope before including the module, module will adopt the new parameter value.
+
+~~~
+// module_parameters_adopt.nf
+nextflow.enable.dsl=2
+
+params.message = 'parameter from workflow script'
+
+include {sayMessage} from './modules/module.nf'
+
+workflow {
+    sayMessage()
+}
+~~~
+{: .language-groovy }
 
 ~~~
 parameter from workflow script
 ~~~
 {: .output }
 
-The module uses the parameters define before the include statement, therefore any further parameter set later is ignored.
+However, if a parameter is defined after module include that parameter will not be adopted
+~~~
+// module_parameters_not_adopted.nf
+nextflow.enable.dsl=2
+
+include {sayMessage} from './modules/module.nf'
+
+params.message = 'parameter from workflow script'
+
+workflow {
+    sayMessage()
+    println(params.message)
+}
+~~~
+{: .language-groovy }
+
+~~~
+parameter from module script
+parameter from workflow script
+~~~
+{: .output }
 
 **Tip:** Define all pipeline parameters at the beginning of the script before any include declaration.
 
@@ -243,6 +285,7 @@ The option `addParams` can be used to extend the module parameters without affec
 For example:
 
 ~~~
+// module_parameters_addparams.nf
 nextflow.enable.dsl=2
 
 params.message = 'parameter from workflow script'
@@ -251,13 +294,16 @@ include {sayMessage} from './modules/module.nf' addParams(message: 'using addPar
 
 workflow {
     sayMessage()
+    println(params.message)
 }
+
 ~~~
 {: .language-groovy }
 
 The above code snippet prints:
 ~~~
 using addParams
+parameter from workflow script
 ~~~
 {: .output}
 
