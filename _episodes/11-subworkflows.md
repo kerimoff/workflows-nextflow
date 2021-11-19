@@ -9,20 +9,20 @@ objectives:
 - "Understand how to create a sub-workflow."
 - "Understand how to run part of a workflow."
 keypoints:
-- "Nextflow allows for definition of reusable sub-workflow libraries."
+- "Nextflow allows to define reusable sub-workflows."
 - "Sub-workflow allows the definition of workflow processes that can be included from any other script and invoked as a custom function within the new workflow scope. This enables reuse of workflow components"
 - "The `entry` option of the nextflow `run` command specifies the workflow name to be executed"
 
 ---
 ## Sub-workflows
 
-We have seen previously the Nextflow DSL2 syntax allows for the definition of reusable processes (modules). Nextflow DSL2 also allow the definition reusable  sub-workflow libraries.
+We have seen previously the Nextflow DSL2 syntax allows for the definition of reusable processes (modules). Nextflow DSL2 also allows to define reusable sub-workflows.
 
 ## Workflow definition
 
 The `workflow` keyword allows the definition of workflow components that enclose the invocation of one or more `processes` and `operators`.
 
-For example,:
+For example:
 
 ~~~
 nextflow.enable.dsl=2
@@ -31,13 +31,13 @@ include {QUANT;INDEX} from './modules/module.nf'
 
 workflow RNASEQ_QUANT_PIPE {
   read_pairs_ch = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz')
-  transcriptome_ch = channel.fromPath('/data/yeast/transcriptome/*.fa.gz')
-  QUANT(INDEX(transcriptome_ch),read_pairs_ch)
+  transcriptome_ch = channel.fromPath('data/yeast/transcriptome/*.fa.gz')
+  QUANT(INDEX(transcriptome_ch), read_pairs_ch)
 }
 ~~~
 {: .language-groovy }
 
-The above snippet defines a workflow component, named `RNASEQ_QUANT_PIPE`, that can be invoked from another workflow component definition in the same way as any other function or `process` i.e. `RNASEQ_QUANT()`.
+The above snippet defines a workflow component, named `RNASEQ_QUANT_PIPE`, that can be invoked from another workflow component definition in the same way as any other function or `process` i.e. `RNASEQ_QUANT_PIPE()`.
 
 ~~~
 nextflow.enable.dsl=2
@@ -68,7 +68,7 @@ workflow  {
 
 A workflow component can access any variable and parameter defined in the outer scope.
 
-For Example:
+For example:
 
 ~~~
 nextflow.enable.dsl=2
@@ -104,6 +104,7 @@ workflow RNASEQ_QUANT_PIPE {
     take:
       transcriptome_ch
       read_pairs_ch
+
     main:
       transcriptome_ch = channel.fromPath(params.transcriptome)
       INDEX(transcriptome_ch)
@@ -131,6 +132,7 @@ workflow RNASEQ_QUANT_PIPE {
     take:
       transcriptome_ch
       read_pairs_ch
+
     main:
       transcriptome_ch = channel.fromPath(params.transcriptome)
       INDEX(transcriptome_ch)
@@ -138,13 +140,13 @@ workflow RNASEQ_QUANT_PIPE {
 }
 
 workflow {
-    RNASEQ_QUANT_PIPE(transcriptome_ch,read_pairs_ch )
+    RNASEQ_QUANT_PIPE(transcriptome_ch,read_pairs_ch)
 }
 ~~~
 {: .language-groovy }
 
 > ## Note
-> Workflow inputs are by definition channel data structures. If a basic data type is provided instead, ie. number, string, list, etc. it’s implicitly converted to a channel value (ie. non-consumable).
+> Workflow inputs are by definition channel data structures. If a basic data type is provided instead, ie. number, string, list, etc. it’s implicitly converted to a channel value (i. e. non-consumable).
 {: .callout}  
 
 ### Workflow outputs
@@ -165,8 +167,10 @@ workflow RNASEQ_QUANT_PIPE {
     take:
      transcriptome_ch
      read_pairs_ch
+
     emit:
       QUANT.out
+
     main:
       transcriptome_ch = channel.fromPath(params.transcriptome)
       INDEX(transcriptome_ch)
@@ -177,7 +181,7 @@ workflow RNASEQ_QUANT_PIPE {
 
 The above script declares one output, `QUANT.out`.
 
-The result of the `RNASEQ_QUANT_PIPE` execution can be accessed using the `out` property ie. `RNASEQ_QUANT_PIPE.out`.
+The result of the `RNASEQ_QUANT_PIPE` execution can be accessed using the `out` property i. e. `RNASEQ_QUANT_PIPE.out`.
 
 When there are multiple output channels declared, use the array bracket notation to access each output component as described for the Process outputs definition.
 
@@ -198,6 +202,7 @@ workflow RNASEQ_QUANT_PIPE {
    main:
      INDEX(transcriptome_ch)
      QUANT(INDEX.out,read_pairs_ch)
+
    emit:
      read_quant = QUANT.out
 }
@@ -208,33 +213,35 @@ The output `QUANT.out` is assigned the name `read_quant`
 The the result of the above snippet can accessed using:
 
 ~~~
-RNASEQ_QUANT_PIPE.out.read_quant`.
+RNASEQ_QUANT_PIPE.out.read_quant.
 ~~~
 {: .language-groovy }
 
 
 
 > ## Note
-> Implicit workflow definition is ignored when a script is included as module. This allows the writing a workflow script that can be used either as a library module and as application script.
+> Implicit workflow definition is ignored when a script is included as module. This allows the writing a workflow script that can be used either as a library module or as an application script.
 {: .callout}
 
 
 ### Workflow composition
 
-As with `modules` workflows components can be defined within your script or imported by a `include` statment. After which thet can then be invoked and composed as any other `workflow component` or process in your script.
+As with `modules` workflows components can be defined within your script or imported by a `include` statment. After which they can be invoked and composed as any other `workflow component` or process in your script.
 
 ~~~
 nextflow.enable.dsl=2
 
-// file modules/qc.nf
+// file ./modules/qc.nf
 include {FASTQC} from './modules.nf'
 
 workflow READ_QC_PIPE {
     take:
       read_pairs_ch
       quant_out_ch
+
     main:
         FASTQC(read_pairs_ch)
+
     emit:
         FASTQC.out
 }
@@ -245,14 +252,18 @@ workflow READ_QC_PIPE {
 nextflow.enable.dsl=2
 
 include { READ_QC_PIPE } from './modules/qc.nf'
+include { QUANT; INDEX } from './modules/module.nf'
+include { MULTIQC } from './modules/multiqc.nf'
 
 workflow RNASEQ_QUANT_PIPE {
     take:
       transcriptome_ch
       read_pairs_ch
+
     main:
         INDEX(transcriptome)
         QUANT(INDEX.out)
+
     emit:
         QUANT.out
 }
@@ -265,10 +276,11 @@ workflow {
     take:
       transcriptome_ch
       read_pairs_ch
+
     main:
-      RNASEQ_QUANT(transcriptome_ch,read_pairs_ch)
-      READ_QC(read_pairs_ch,RNASEQ_QUANT.out)
-      MULTIQC(RNASEQ_QUANT.out.mix(READ_QC).collect())
+      RNASEQ_QUANT_PIPE(transcriptome_ch, read_pairs_ch)
+      READ_QC_PIPE(read_pairs_ch, RNASEQ_QUANT_PIPE.out)
+      MULTIQC(RNASEQ_QUANT_PIPE.out.mix(READ_QC_PIPE).collect())
 }
 ~~~
 {: .source}  
