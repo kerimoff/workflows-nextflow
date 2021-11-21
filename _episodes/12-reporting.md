@@ -103,12 +103,12 @@ $ nextflow log tiny_fermat -f 'process,exit,hash,duration'
 Will output the process name, exit status, hash and duration of the process for the `tiny_fermat` run to the terminal.
 
 ~~~
-index	0	7b/3753ff	2s
-fastqc	0	c1/56a36d	9.3s
-fastqc	0	f7/659c65	9.1s
-quant	0	82/ba67e3	2.7s
-quant	0	e5/2816b9	3.2s
-multiqc	0	3b/3485d0	6.3s
+INDEX	0	7b/3753ff	2s
+FASTQC	0	c1/56a36d	9.3s
+FASTQC	0	f7/659c65	9.1s
+QUANT	0	82/ba67e3	2.7s
+QUANT	0	e5/2816b9	3.2s
+MULTIQC	0	3b/3485d0	6.3s
 ~~~
 {: .output}
 
@@ -174,10 +174,10 @@ field. It is important to note that the resultant output can not be used to run 
 
 The output from the `log` command can be very long. We can subset the output using the option `-F` (filter) specifying  the filtering criteria.  This will print only those tasks matching a pattern using the syntax `~=/<pattern>/`.
 
-For example to filter for process with the name `fastqc` we would run:
+For example to filter for process with the name `FASTQC` we would run:
 
 ~~~
-$ nextflow log tiny_fermat -F 'process =~ /fastqc/'
+$ nextflow log tiny_fermat -F 'process =~ /FASTQC/'
 ~~~
 {: .language-bash }
 
@@ -202,7 +202,7 @@ This can be useful to locate specific tasks work directories.
 > > Use the `-F` option and a regular expression to filter the for a specific process.
 > > ## Solution
 > > ~~~
-> > $ nextflow log elegant_descartes -f name,hash,process,status -F 'process =~ /multiqc/'
+> > $ nextflow log elegant_descartes -f name,hash,process,status -F 'process =~ /MULTIQC/'
 > > ~~~
 > > {: .language-bash }
 >  {: .solution }
