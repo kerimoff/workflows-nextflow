@@ -71,6 +71,69 @@ ref1_2.fq.gz 58708
 > {: .solution}
 {: .challenge}
 
+
+## The Work directory
+
+By default the pipeline results are cached in the directory `work` where the pipeline is launched.
+
+We can use the Bash `tree` command to list the contents of the work directory.
+**Note:** By default tree does not print hidden files (those beginning with a dot `.`). Use the `-a`   to view  all files.
+
+~~~
+$ tree -a work
+~~~
+{: .language-bash}
+
+~~~
+work/
+├── 5e
+│   └── dd382c2b8777ad43e24c35f50dc0bf
+│       ├── .command.begin
+│       ├── .command.err
+│       ├── .command.log
+│       ├── .command.out
+│       ├── .command.run
+│       ├── .command.sh
+│       ├── .exitcode
+│       └── ref1_1.fq.gz -> /Users/kerimov/Work/GitHub/nf-training/data/yeast/reads/ref1_1.fq.gz
+├── 71
+│   └── d4e5514667f56a8e6f4d237f86d16e
+│       ├── .command.begin
+│       ├── .command.err
+│       ├── .command.log
+│       ├── .command.out
+│       ├── .command.run
+│       ├── .command.sh
+│       ├── .exitcode
+│       └── temp33_3_2.fq.gz -> /Users/kerimov/Work/GitHub/nf-training/data/yeast/reads/temp33_3_2.fq.gz
+[...truncated...]
+~~~
+{: .output }
+
+Each file under the unqiue hash directory starting with `.command` and `.exitcode` has its own responsibility. It is very informative to know what are their purpose:
+
+**.exitcode** contains the exit code message after the task is executed. If the task is executed successfully this file contains `0` (e.g. exitcode is zero, there were no errors) else the code is different than zero.
+
+**.command.sh** contains the script has been executed for the task.
+~~~
+#!/bin/bash -ue
+printf 'temp33_3_2.fq.gz '
+gunzip -c temp33_3_2.fq.gz | wc -l
+~~~
+{: .output }
+
+**.command.err** contains error meesages in case they exist (e.g. the task failed to execute). If the task was executed successfully this file will remain emplty.
+
+**.command.log** contains all the log messages generated during the execution of script _.command.sh_
+
+**.command.out** contains all the standart output generated during the execution of script _.command.sh_
+
+**.command.begin** it is the file created when the task starts to be executed. Usually remains empty
+
+**.command.run** a wrapper file to run the script in the specified environment. Nextflow specifies where to submit/run (e.g. local, HPC, cloud) and how to run (with container, with conda env etc.) the job by changing this file.
+
+You will see the input Fastq files are symbolically linked to their original location. If the process input contains a file then this file will be staged (generated a symlink in work directory from the original file) under unique hash directory and used by script.
+
 ## How does resume work?
 
 The mechanism works by assigning a unique ID to each task. This unique ID is used to create a separate execution directory, called the working directory, where the tasks are executed and the results stored. A task’s unique ID is generated as a 128-bit hash number obtained from a composition of the task’s:
@@ -137,67 +200,6 @@ This helps a lot when testing or modifying part of your pipeline without having 
 {: .challenge}
 
 
-## The Work directory
-
-By default the pipeline results are cached in the directory `work` where the pipeline is launched.
-
-We can use the Bash `tree` command to list the contents of the work directory.
-**Note:** By default tree does not print hidden files (those beginning with a dot `.`). Use the `-a`   to view  all files.
-
-~~~
-$ tree -a work
-~~~
-{: .language-bash}
-
-~~~
-work/
-├── 5e
-│   └── dd382c2b8777ad43e24c35f50dc0bf
-│       ├── .command.begin
-│       ├── .command.err
-│       ├── .command.log
-│       ├── .command.out
-│       ├── .command.run
-│       ├── .command.sh
-│       ├── .exitcode
-│       └── ref1_1.fq.gz -> /Users/kerimov/Work/GitHub/nf-training/data/yeast/reads/ref1_1.fq.gz
-├── 71
-│   └── d4e5514667f56a8e6f4d237f86d16e
-│       ├── .command.begin
-│       ├── .command.err
-│       ├── .command.log
-│       ├── .command.out
-│       ├── .command.run
-│       ├── .command.sh
-│       ├── .exitcode
-│       └── temp33_3_2.fq.gz -> /Users/kerimov/Work/GitHub/nf-training/data/yeast/reads/temp33_3_2.fq.gz
-[...truncated...]
-~~~
-{: .output }
-
-Each file under the unqiue hash directory starting with `.command` and `.exitcode` has its own responsibility. It is very informative to know what are their purpose:
-
-**.exitcode** contains the exit code message after the task is executed. If the task is executed successfully this file contains `0` (e.g. exitcode is zero, there were no errors) else the code is different than zero.
-
-**.command.sh** contains the script has been executed for the task.
-~~~
-#!/bin/bash -ue
-printf 'temp33_3_2.fq.gz '
-gunzip -c temp33_3_2.fq.gz | wc -l
-~~~
-{: .output }
-
-**.command.err** contains error meesages in case they exist (e.g. the task failed to execute). If the task was executed successfully this file will remain emplty.
-
-**.command.log** contains all the log messages generated during the execution of script _.command.sh_
-
-**.command.out** contains all the standart output generated during the execution of script _.command.sh_
-
-**.command.begin** it is the file created when the task starts to be executed. Usually remains empty
-
-**.command.run** a wrapper file to run the script in the specified environment. Nextflow specifies where to submit/run (e.g. local, HPC, cloud) and how to run (with container, with conda env etc.) the job by changing this file.
-
-You will see the input Fastq files are symbolically linked to their original location. If the process input contains a file then this file will be staged (generated a symlink in work directory from the original file) under unique hash directory and used by script.
 
 ### Specifying another work directory
 
