@@ -15,7 +15,7 @@ keypoints:
 - "Nextflow stores intermediate data in a working directory."
 ---
 
-A key features of a modern workflow management system, like Nextflow, is the ability to restart a pipeline after an error from the last successful process. Nextflow achieves this by automatically keeping track of all the processes executed in your pipeline via  caching  and checkpointing.
+One of the key features of a modern workflow management system, like Nextflow, is the ability to restart a pipeline after an error from the last successful process execution. Nextflow achieves this by automatically keeping track of all the processes executed in your pipeline via  caching  and checkpointing.
 
 ## Resume
 
@@ -117,7 +117,7 @@ This helps a lot when testing or modifying part of your pipeline without having 
 > > N E X T F L O W  ~  version 20.10.0
 > > Launching `wc.nf` [gigantic_minsky] - revision: fede04a544
 > > executor >  local (1)
-> > [20/cda0d5] process > NUM_LINES (5) [100%] 6 of 6, cached: 5 ✔
+> > [71/d4e551] process > NUM_LINES (5) [100%] 6 of 6, cached: 5 ✔
 > > temp33_1_2.fq.gz 82372
 > >
 > > temp33_3_1.fq.gz 88956
@@ -145,68 +145,59 @@ We can use the Bash `tree` command to list the contents of the work directory.
 **Note:** By default tree does not print hidden files (those beginning with a dot `.`). Use the `-a`   to view  all files.
 
 ~~~
-$ tree work
+$ tree -a work
 ~~~
 {: .language-bash}
 
 ~~~
 work/
-├── 02
-│   └── 26541c31e597c2243b2489b06f51ef
-│       └── ref1_2.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/ref1_2.fq.gz
-├── 07
-│   └── 54363a267def098c0544708d3f6dd3
-│       └── temp33_1_2.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/temp33_1_2.fq.gz
-├── 4a
-│   └── aeed908acc5481ee887736386ac8b8
-│       └── ref3_2.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/ref3_2.fq.gz
-├── 57
-│   ├── 6a47b10d1569561ae321720d0b8f15
-│   │   └── etoh60_1_2.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/etoh60_1_2.fq.gz
-│   └── 99ee9a312eb3f3b8afaa6cf881f972
-│       └── etoh60_3_1.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/etoh60_3_1.fq.gz
 ├── 5e
-│   └── 7ee2308079f20c96a7d5b70291e167
-│       └── temp33_1_1.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/temp33_1_1.fq.gz
-├── 7b
-│   └── 963dc9c1592ade5978e5baa7619cef
-│       └── etoh60_2_1.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/etoh60_2_1.fq.gz
-├── 7e
-│   ├── a706851ba2ad4f3ce796d6b55faadf
-│   │   └── temp33_3_2.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/temp33_3_2.fq.gz
-│   └── b00105a9510bc0182e0382e2a91710
-│       └── temp33_2_2.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/temp33_2_2.fq.gz
-├── 8d
-│   └── 19a8e8da614510599fb4a8c1080176
-│       └── temp33_2_1.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/temp33_2_1.fq.gz
-├── 9f
-│   └── edb44e296ae4710ade2da9c6a2cd13
-│       └── temp33_3_1.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/temp33_3_1.fq.gz
-├── b4
-│   └── 81ccb20b2920b042c0916d7fb2c071
-│       └── etoh60_3_2.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/etoh60_3_2.fq.gz
-├── b5
-│   └── 337cfa936e4670c386efcd93497dcd
-│       └── etoh60_1_1.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/etoh60_1_1.fq.gz
-├── c3
-│   └── db85075e09b1743f73f4dc78657423
-│       └── etoh60_2_2.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/etoh60_2_2.fq.gz
-├── d7
-│   └── c070aebb4232b6171043f1c29066e6
-│       └── ref1_1.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/ref1_1.fq.gz
-├── e3
-│   └── 9c644d276e02018189862afedc6ab6
-│       └── ref3_1.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/ref3_1.fq.gz
-├── f0
-│   └── 9421f2eb5b12ac3213e04e5682324e
-│       └── ref2_1.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/ref2_1.fq.gz
-└── fc
-    └── 4022a522f2964dde97fa1484bd5742
-        └── ref2_2.fq.gz -> /Users/ggrimes2/Downloads/nextflow_rnaseq_training_dataset/data/yeast/reads/ref2_2.fq.gz
+│   └── dd382c2b8777ad43e24c35f50dc0bf
+│       ├── .command.begin
+│       ├── .command.err
+│       ├── .command.log
+│       ├── .command.out
+│       ├── .command.run
+│       ├── .command.sh
+│       ├── .exitcode
+│       └── ref1_1.fq.gz -> /Users/kerimov/Work/GitHub/nf-training/data/yeast/reads/ref1_1.fq.gz
+├── 71
+│   └── d4e5514667f56a8e6f4d237f86d16e
+│       ├── .command.begin
+│       ├── .command.err
+│       ├── .command.log
+│       ├── .command.out
+│       ├── .command.run
+│       ├── .command.sh
+│       ├── .exitcode
+│       └── temp33_3_2.fq.gz -> /Users/kerimov/Work/GitHub/nf-training/data/yeast/reads/temp33_3_2.fq.gz
+[...truncated...]
 ~~~
 {: .output }
 
-You will see the input Fastq files are symbolically linked to their original location.
+Each file under the unqiue hash directory starting with `.command` and `.exitcode` has its own responsibility. It is very informative to know what are their purpose:
+
+**.exitcode** contains the exit code message after the task is executed. If the task is executed successfully this file contains `0` (e.g. exitcode is zero, there were no errors) else the code is different than zero.
+
+**.command.sh** contains the script has been executed for the task.
+~~~
+#!/bin/bash -ue
+printf 'temp33_3_2.fq.gz '
+gunzip -c temp33_3_2.fq.gz | wc -l
+~~~
+{: .output }
+
+**.command.err** contains error meesages in case they exist (e.g. the task failed to execute). If the task was executed successfully this file will remain emplty.
+
+**.command.log** contains all the log messages generated during the execution of script _.command.sh_
+
+**.command.out** contains all the standart output generated during the execution of script _.command.sh_
+
+**.command.begin** it is the file created when the task starts to be executed. Usually remains empty
+
+**.command.run** a wrapper file to run the script in the specified environment. Nextflow specifies where to submit/run (e.g. local, HPC, cloud) and how to run (with container, with conda env etc.) the job by changing this file.
+
+You will see the input Fastq files are symbolically linked to their original location. If the process input contains a file then this file will be staged (generated a symlink in work directory from the original file) under unique hash directory and used by script.
 
 ### Specifying another work directory
 
