@@ -261,7 +261,7 @@ For example, we can specify different `cpus` and `memory` resources
 for the processes `INDEX` and `FASTQC` as follows:
 
 ~~~
-// process_resources.config
+// configuration_process-names.config
 process {
     withName: INDEX {
         cpus = 4
