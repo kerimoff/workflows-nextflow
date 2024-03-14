@@ -583,7 +583,7 @@ The resulting channel emits:
 
 Forking operators split a single channel into multiple channels.
 
-### into
+### into (deprecated in DSL2)
 
 The `into` operator connects a source channel to two or more target channels in such a way the values emitted by the source channel are copied to the target channels. Channel names are separated by a semi colon. For example:
 
