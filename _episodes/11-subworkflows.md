@@ -95,10 +95,10 @@ For example:
 ~~~
 nextflow.enable.dsl=2
 
-include {QUANT;INDEX} from './modules/module.nf'
+include {QUANT;INDEX} from './modules/rnaseq-tasks.nf'
 
-params.transcriptome = '/some/data/file'
 read_pairs_ch = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz')
+transcriptome_ch = channel.fromPath('data/yeast/transcriptome/*.fa.gz')
 
 workflow RNASEQ_QUANT_PIPE {
     take:
@@ -106,7 +106,6 @@ workflow RNASEQ_QUANT_PIPE {
       read_pairs_ch
 
     main:
-      transcriptome_ch = channel.fromPath(params.transcriptome)
       INDEX(transcriptome_ch)
       QUANT(INDEX.out,read_pairs_ch)
 }
@@ -123,10 +122,8 @@ These input channels can then be passed to the workflow as parameters inside the
 ~~~
 nextflow.enable.dsl=2
 
-include {QUANT;INDEX} from './modules/module.nf'
-
-params.transcriptome = '/some/data/file'
 read_pairs_ch = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz')
+transcriptome_ch = channel.fromPath('data/yeast/transcriptome/*.fa.gz')
 
 workflow RNASEQ_QUANT_PIPE {
     take:
@@ -134,7 +131,6 @@ workflow RNASEQ_QUANT_PIPE {
       read_pairs_ch
 
     main:
-      transcriptome_ch = channel.fromPath(params.transcriptome)
       INDEX(transcriptome_ch)
       QUANT(INDEX.out,read_pairs_ch)
 }
@@ -283,7 +279,7 @@ workflow {
       MULTIQC(RNASEQ_QUANT_PIPE.out.mix(READ_QC_PIPE).collect())
 }
 ~~~
-{: .source}  
+{: .language-groovy}
 
 > ## Nested workflow execution
 > Nested workflow execution determines an implicit scope. Therefore the same process can be invoked in two different workflow scopes, like for example in the above snippet `INDEX` could be used either in `RNASEQ_QUANT` and `RNASEQ_QC`. The workflow execution path along with the process names defines the process fully qualified name that is used to distinguish the two different process invocations i.e. `RNASEQ_QUANT:INDEX` and `RNASEQ_QC:INDEX` in the above example.
