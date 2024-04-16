@@ -17,7 +17,7 @@ There are two items that you need to download:
 Download the training material copy & pasting the following command in the terminal:
 
 ~~~
-$ git clone https://github.com/ggrimes/nf-training
+$ git clone https://github.com/kerimoff/nf-training.git
 $ cd nf-training
 ~~~
 {: .language-bash}
@@ -39,47 +39,28 @@ conda env create -f environment.yml
 Then activate the environment by running
 
 ~~~
-conda activate nf-training
+conda activate nf-train
 ~~~
 {: .language-bash}
 
 ### Data
 
-Inside the `nf-training` folder download the workshop dataset from Figshare, https://figshare.com/articles/dataset/RNA-seq_training_dataset/14822481
+Data is already in the ready format for usage.
 
-~~~
-$ wget --content-disposition https://ndownloader.figshare.com/files/28531743
-~~~
-{: .language-bash}
 
-Unpack gzipped tar file:
-~~~
-$ tar -xvf  data.tar.gz
-$ rm data.tar.gz
-~~~
-{: .language-bash}
+## Visual Studio Code editor setup
 
-## Atom text editor setup
+Any text editor can be used to write Nextflow scripts. A recommended  code editor is [Visual Studio Code](https://code.visualstudio.com/).
 
-Any text editor can be used to write Nextflow scripts. A recommended text editor is [Atom](https://atom.io/).
+Go to [Visual Studio Code](https://code.visualstudio.com/) and you should see a download button. The button or buttons should be specific to your platform and the download package should be  installable.
 
-Go to https://atom.io and you should see a download button. The button or buttons should be specific to your platform and the download package should be  installable.
 
-### MacOS
+### Nextflow language support in Visual Studio Code
 
-Atom follows the standard Mac zip installation process. You can either press the download button from the https://atom.io site or you can go to the Atom releases page to download the atom-mac.zip file explicitly. Once you have that file, you can click on it to extract the application and then drag the new Atom application into your "Applications" folder.
+You can add Nextflow language support in Visual Studio Code by clicking the [install](https://marketplace.visualstudio.com/items?itemName=nextflow.nextflow) button on the Nextflow language extension.
 
-### Nextflow language support in Atom
 
-You can add Nextflow language support in Atom by clicking the [install](atom://settings-view/show-package?package=language-nextflow) button on the  atom package site https://atom.io/packages/language-nextflow.
 
-### Atom terminal package
-
-https://atom.io/packages/atom-ide-terminal
-
-You can enable a terminal window within Atom by installing the atom-ide-terminal package from https://atom.io/packages/atom-ide-terminal. Click the [install](atom://settings-view/show-package?package=atom-ide-terminal) button and follow the instructions.
-
-Once installed enable the terminal window by selecting the Packages menu -> Atom IDE terminal -> Toggle menu item.
 
 ## Nextflow install without conda
 
