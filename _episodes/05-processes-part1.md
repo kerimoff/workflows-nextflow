@@ -264,7 +264,7 @@ workflow {
 This allows the use of a different programming languages which may better fit a particular job. However, for large chunks of code it is suggested to save them into separate files and invoke them from the process script.
 
 ~~~
-nextflow.enable.dsl=2
+// process_python_with_scriptfile.nf
 
 process PYSTUFF {
 
