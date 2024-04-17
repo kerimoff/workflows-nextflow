@@ -100,24 +100,18 @@ Nextflow syntax can handle most workflow use cases with ease, and then
 Groovy can be used to handle corner cases which may be difficult to
 implement using the DSL.
 
-### DSL2 syntax
+### DSL1 syntax
 
-Nextflow (version > 20.07.1) provides a revised syntax to the original
-DSL, known as DSL2. The DSL2 syntax introduces several improvements
-such as modularity (separating components to provide flexibility and
-enable reuse), and improved data flow manipulation. This further simplifies the writing of complex data analysis pipelines, and enhances workflow readability, and reusability.
+Nextflow (in versions < 20.07.1) used to have a different syntax which we called DSL1. 
+Currently the default case of Nextlow is DSL2.
 
-This feature is enabled by the following directive at the beginning a workflow script:
+If you encounter a code snippet in a Nextflow pipeline similar to the one below, 
+it's because in the past, when the default version was DSL1, it was necessary to explicitly state if DSL2 was being used.
 
 ~~~
 nextflow.enable.dsl=2
 ~~~
 {: .language-groovy}
-
-> ## Earlier syntax versions
->
-> Scripts that contain the directive `nextflow.preview.dsl=2` use an early version of the DSL2 syntax, which may include experimental features that have been changed or removed in the formal DSL2 syntax. Scripts without these directives use the first version of the Nextflow syntax which we refer to as DSL1. DSL1 workflows use many of the same concepts presented in this lesson, but some aspects such as the flow of data are written differently. DSL1 workflows are also written in a single script, unlike DSL2 workflows which can be spread across many files. This lesson will focus on the DSL2 syntax as, after the DSL1 to DSL2 transition period is over, it will become the default way of writing Nextflow workflows.
-{: .callout}
 
 ### Processes, channels, and workflows
 
@@ -158,7 +152,7 @@ Open the file `wc.nf` in the script directory with your favourite text editor.
 This is a Nextflow script. It contains;
 
 1. An optional interpreter directive ("Shebang") line, specifying the location of the Nextflow interpreter.
-1. `nextflow.enable.dsl=2` to enable DSL2 syntax.
+1. `nextflow.enable.dsl=2` used to enable DSL2 syntax.
 1. A multi-line Nextflow comment, written using C style block comments,
 followed by a single line comment.
 1. A pipeline parameter `params.input` which is given a default value, of the relative path to the location of a compressed fastq file, as a string.
