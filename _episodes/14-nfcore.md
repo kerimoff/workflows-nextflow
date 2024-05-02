@@ -464,12 +464,12 @@ Nextflow can load pipeline configurations from multiple locations.  nf-core pipe
 * Because this is loaded at run time, anyone can add a profile here for their system and it will be immediately available for all nf-core pipelines.
 4. Local config files given to Nextflow with the `-c` flag
 ~~~
-$ nextflow run nf-core/rnaseq -r 3.10.1 -c mylocal.config
+$ nextflow run nf-core/rnaseq -r 3.10.1 -c mylocal.config --outdir nfcore_rnaseq_results
 ~~~
 {: .language-bash}
 5. Command line configuration: pipeline parameters can be passed on the command line using the `--<parameter>` syntax.
 ~~~
-$ nextflow run nf-core/rnaseq -r 3.10.1 --email "my@email.com"`
+$ nextflow run nf-core/rnaseq -r 3.10.1 --email "my@email.com" --outdir nfcore_rnaseq_results 
 ~~~
 {: .language-bash}
 
@@ -510,8 +510,8 @@ profiles {
 Multiple comma-separate config profiles can be specified in one go, so the following commands are perfectly valid:
 
 ~~~
-$ nextflow run nf-core/rnaseq -r 3.10.1 -profile test,docker
-$ nextflow run nf-core/rnaseq -r 3.10.1 -profile singularity,debug
+$ nextflow run nf-core/rnaseq -r 3.10.1 -profile test,docker --outdir nfcore_rnaseq_results
+$ nextflow run nf-core/rnaseq -r 3.10.1 -profile singularity,debug --outdir nfcore_rnaseq_results
 ~~~
 {: .language-bash}
 
@@ -631,7 +631,7 @@ $ nextflow log
 {: .language-bash}
 
 ~~~
-$ nextflow run nf-core/rnaseq -r 3.10.1 -profile test -resume <run_name>
+$ nextflow run nf-core/rnaseq -r 3.10.1 -profile test -resume <run_name> --outdir nfcore_rnaseq_results
 ~~~
 {: .language-bash}
 
