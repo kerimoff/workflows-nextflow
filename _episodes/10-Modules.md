@@ -125,7 +125,7 @@ workflow {
     reads = channel.fromFilePairs('data/yeast/reads/*_{1,2}.fq.gz')
     transcriptome_ch = channel.fromPath('data/yeast/transcriptome/*.fa.gz')
     INDEX(transcriptome_ch)
-    QUANT(index.out,reads)
+    QUANT(INDEX.out,reads)
 }
 ~~~
 {: .language-groovy }

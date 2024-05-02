@@ -16,7 +16,7 @@ keypoints:
 ---
 ## Sub-workflows
 
-We have seen previously the Nextflow DSL2 syntax allows for the definition of reusable processes (modules). Nextflow DSL2 also allows to define reusable sub-workflows.
+We have seen previously the Nextflow allows for the definition of reusable processes (modules). Nextflow also allows to define reusable sub-workflows.
 
 ## Workflow definition
 
@@ -209,7 +209,7 @@ The output `QUANT.out` is assigned the name `read_quant`
 The the result of the above snippet can accessed using:
 
 ~~~
-RNASEQ_QUANT_PIPE.out.read_quant.
+RNASEQ_QUANT_PIPE.out.read_quant
 ~~~
 {: .language-groovy }
 
