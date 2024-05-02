@@ -329,10 +329,10 @@ $ nextflow run nf-core/<pipeline>.
 
 For the best reproducibility, it is good to explicitly reference the pipeline version number that you wish to use with the `-revision`/`-r` flag.
 
-In the example below we are pulling the rnaseq pipeline version 3.0
+In the example below we are pulling the rnaseq pipeline version 3.10.1
 
 ~~~
-$ nextflow pull nf-core/rnaseq -revision 3.0
+$ nextflow pull nf-core/rnaseq -revision 3.10.1
 ~~~
 {: .language-bash}
 
@@ -359,7 +359,7 @@ nf-core/tools version 2.1
 ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Pipeline Name     ┃ Stars ┃ Latest Release ┃      Released ┃    Last Pulled ┃ Have latest release? ┃
 ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
-│ rnaseq            │   304 │            3.0 │  3 months ago │ 1 minutes ago │ Yes (v3.0)           │
+│ rnaseq            │   304 │         3.10.1 │  3 months ago │ 1 minutes ago  │ Yes (v3.10.1)        │
 [..truncated..]
 ~~~
 {: .output}
@@ -396,20 +396,20 @@ Each pipeline has its own webpage at https://nf-co.re/<pipeline_name> e.g. [nf-c
 In addition to this documentation, each pipeline comes with basic command line reference. This can be seen by running the pipeline with the `--help` flag, for example:
 
 ~~~
-$ nextflow run -r 3.0 nf-core/rnaseq --help
+$ nextflow run -r 3.10.1 nf-core/rnaseq --help
 ~~~
 {: .language-bash}
 
 ~~~
 N E X T F L O W  ~  version 20.10.0
-Launching `nf-core/rnaseq` [silly_miescher] - revision: 3643a94411 [3.0]
+Launching `nf-core/rnaseq` [silly_miescher] - revision: 3643a94411 [3.10.1]
 ------------------------------------------------------
                                         ,--./,-.
         ___     __   __   __   ___     /,-._.--~'
   |\ | |__  __ /  ` /  \ |__) |__         }  {
   | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                         `._,._,'
-  nf-core/rnaseq v3.0
+  nf-core/rnaseq v3.10.1
 ------------------------------------------------------
 
 Typical pipeline command:
@@ -441,7 +441,7 @@ Once all prompts have been answered, non-default values are saved to a `params.j
 To use the launch feature, just specify the pipeline name:
 
 ~~~
-$ nf-core launch -r 3.0 rnaseq
+$ nf-core launch -r 3.10.1 rnaseq
 ~~~
 {: .language-bash}
 
@@ -464,12 +464,12 @@ Nextflow can load pipeline configurations from multiple locations.  nf-core pipe
 * Because this is loaded at run time, anyone can add a profile here for their system and it will be immediately available for all nf-core pipelines.
 4. Local config files given to Nextflow with the `-c` flag
 ~~~
-$ nextflow run nf-core/rnaseq -r 3.0 -c mylocal.config
+$ nextflow run nf-core/rnaseq -r 3.10.1 -c mylocal.config
 ~~~
 {: .language-bash}
 5. Command line configuration: pipeline parameters can be passed on the command line using the `--<parameter>` syntax.
 ~~~
-$ nextflow run nf-core/rnaseq -r 3.0 --email "my@email.com"`
+$ nextflow run nf-core/rnaseq -r 3.10.1 --email "my@email.com"`
 ~~~
 {: .language-bash}
 
@@ -510,8 +510,8 @@ profiles {
 Multiple comma-separate config profiles can be specified in one go, so the following commands are perfectly valid:
 
 ~~~
-$ nextflow run nf-core/rnaseq -r 3.0 -profile test,docker
-$ nextflow run nf-core/rnaseq -r 3.0 -profile singularity,debug
+$ nextflow run nf-core/rnaseq -r 3.10.1 -profile test,docker
+$ nextflow run nf-core/rnaseq -r 3.10.1 -profile singularity,debug
 ~~~
 {: .language-bash}
 
@@ -561,7 +561,7 @@ If you specify the flag `--singularity`, it will also download any singularity i
 
 
 ~~~
-$ nf-core download nf-core/rnaseq -r 3.0
+$ nf-core download nf-core/rnaseq -r 3.10.1
 ~~~
 > {: .language-bash}
 
@@ -632,7 +632,7 @@ $ nextflow log
 {: .language-bash}
 
 ~~~
-$ nextflow run nf-core/rnaseq -r 3.0 -profile test -resume <run_name>
+$ nextflow run nf-core/rnaseq -r 3.10.1 -profile test -resume <run_name>
 ~~~
 {: .language-bash}
 
