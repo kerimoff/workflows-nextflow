@@ -590,16 +590,15 @@ INFO     MD5 checksum for nf-core-rnaseq-3.0.tar.gz: f0e0c239bdb39c613d6a080f1de
 {: .output}
 
 > ## Exercise  Running a test pipeline
->  Run the nf-core/hlatyping pipeline release 1.2.0  with the provided test data using the profile test and conda.
->  Add the parameter `--max_memory 3G`.
+>  Run the nf-core/hlatyping pipeline release 2.0.0  with the provided test data using the profile test and docker.
 >  ~~~
->  $ nextflow run nf-core/hlatyping -r 1.2.0 -profile test,conda  --max_memory 3G
+>  $ nextflow run nf-core/hlatyping -r 2.0.0 -profile test,docker --outdir hla_results
 >  ~~~
 > The pipeline does next-generation sequencing-based Human Leukozyte Antigen (HLA) typing as should run quickly.
 > > ## Solution
 > >
 > > ~~~
-> > $ nextflow run nf-core/hlatyping -r 1.2.0 -profile test,conda  --max_memory 3G
+> > $ nextflow run nf-core/hlatyping -r 2.0.0 -profile test,docker --outdir hla_results
 > > ~~~
 > {: .solution}
 {: .challenge}
