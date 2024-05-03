@@ -168,7 +168,6 @@ workflow RNASEQ_QUANT_PIPE {
       QUANT.out
 
     main:
-      transcriptome_ch = channel.fromPath(params.transcriptome)
       INDEX(transcriptome_ch)
       QUANT(INDEX.out,read_pairs_ch)
 }
